@@ -3,21 +3,21 @@ from listen_speack.speak import speak
 import os
 from dotenv import load_dotenv
 
-# Cargar variables de entorno
+# Load environment variables
 load_dotenv()
 
-# Comando de activación
-command = "HEY BRO"
+# Activation command
+command = "hello"
 
 if __name__ == "__main__":
     while True:
         text = listen()
-        if text:  # Verifica si text tiene contenido
+        if text:  # Check if text contains content
             if command.lower() in text.lower():
-                print("Comando reconocido")
+                print("Command recognized")
                 speak("How can I help you?")
             else:
-                # Procesar directamente otros comandos
+                # Directly process other commands
                 note = text.lower()
                 if "open word" in note:
                     os.system("start winword")
@@ -28,23 +28,20 @@ if __name__ == "__main__":
                 elif "open powerpoint" in note:
                     os.system("start powerpnt")
                     speak("Opening PowerPoint")
-                elif "open notepad" in note:
-                    os.system("start notepad")
-                    speak("Opening Notepad")
                 elif "open paint" in note:
                     os.system("start mspaint")
                     speak("Opening Paint")
                 elif "talk" in note:
-                    print("Abriendo conversación...")
+                    print("Opening conversation...")
                     speak("Opening conversation.")
-                    # Ejecutar conversacion.py
+                    # Execute conversacion.py
                     os.system("python /alexa/llama/conversacion.py")
                 elif "goodbye" in note:
                     speak("Goodbye!")
-                    print("Cerrando asistente...")
+                    print("Closing assistant...")
                     break
                 else:
-                    print("Comando no reconocido.")
+                    print("Command not recognized.")
                     speak("Sorry, I didn't understand that.")
         else:
             print("No input detected. Please try again.")
