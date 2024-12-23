@@ -1,47 +1,45 @@
-from listen_speack.listen import listen
-from listen_speack.speak import speak
+# Archivo: main.py
 import os
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv()
-
-# Activation command
-command = "hello"
-
+from datetime import datetime
+from speak_listen.listen import listen
+from speak_listen.speak import speak
+from chat.chat import chat
 if __name__ == "__main__":
+    last_command = None  # Para detectar comandos repetidos
+
     while True:
-        text = listen()
-        if text:  # Check if text contains content
-            if command.lower() in text.lower():
-                print("Command recognized")
-                speak("How can I help you?")
+        text = listen()  # Escuchar comandos
+        if text:
+            if last_command == text.lower():  # Comprobar si el comando es repetido
+                print("Comando repetido, ignorado.")
+                continue
+
+            last_command = text.lower()  # Actualizar el último comando
+
+            if "goodbye" in text.lower():  # Comando para salir
+                print("Goodbye!")
+                speak("Goodbye! Have a great day!")
+                break
+
+            # Comandos para abrir aplicaciones
+            elif "open word" in text.lower():
+                os.system("start winword")
+            elif "open excel" in text.lower():
+                os.system("start excel")
+            elif "open powerpoint" in text.lower():
+                os.system("start powerpnt")
+            elif "open notepad" in text.lower():
+                os.system("start notepad")
+            elif "open paint" in text.lower():
+                os.system("start mspaint")
+            elif "talk" in text.lower():
+                chat()
+            # Consulta de fecha actual
+            elif "date" in text.lower():
+                now = datetime.now()
+                current_date = now.strftime("%d/%m/%Y")
+                print(f"Today's date is: {current_date}")
+                speak(f"Today's date is {current_date}")
             else:
-                # Directly process other commands
-                note = text.lower()
-                if "open word" in note:
-                    os.system("start winword")
-                    speak("Opening Word")
-                elif "open excel" in note:
-                    os.system("start excel")
-                    speak("Opening Excel")
-                elif "open powerpoint" in note:
-                    os.system("start powerpnt")
-                    speak("Opening PowerPoint")
-                elif "open paint" in note:
-                    os.system("start mspaint")
-                    speak("Opening Paint")
-                elif "talk" in note:
-                    print("Opening conversation...")
-                    speak("Opening conversation.")
-                    # Execute conversacion.py
-                    os.system("python /alexa/llama/conversacion.py")
-                elif "goodbye" in note:
-                    speak("Goodbye!")
-                    print("Closing assistant...")
-                    break
-                else:
-                    print("Command not recognized.")
-                    speak("Sorry, I didn't understand that.")
-        else:
-            print("No input detected. Please try again.")
+                print("Comando no reconocido.")
+                speak("Sorry, I did not understand that command.")

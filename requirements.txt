@@ -1,7 +1,8 @@
-
-fastapi
-uvicorn
-whisper
-pydantic
-numpy
-requests
+pyaudio
+SpeechRecognition
+gtts
+playsound
+python-dateutil
+langchain
+langchain-ollama
+ollama
